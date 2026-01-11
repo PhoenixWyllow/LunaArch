@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Testing utilities and fake implementations for LunaArch framework consumers</Description>
+    <PackageTags>ddd;testing;fakes;test-doubles</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LunaArch.Abstractions\LunaArch.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

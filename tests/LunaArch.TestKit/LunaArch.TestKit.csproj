@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Test utilities for LunaArch consumers including fakes and builders</Description>
+    <PackageTags>ddd;testing;fakes;mocks;test-utilities</PackageTags>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LunaArch.Infrastructure\LunaArch.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
