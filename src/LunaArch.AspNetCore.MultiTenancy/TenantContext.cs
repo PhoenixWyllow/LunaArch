@@ -1,6 +1,6 @@
-using LunaArch.Infrastructure.MultiTenancy.Abstractions;
+using LunaArch.AspNetCore.MultiTenancy.Abstractions;
 
-namespace LunaArch.Infrastructure.MultiTenancy;
+namespace LunaArch.AspNetCore.MultiTenancy;
 
 /// <summary>
 /// Provides access to the current tenant context.

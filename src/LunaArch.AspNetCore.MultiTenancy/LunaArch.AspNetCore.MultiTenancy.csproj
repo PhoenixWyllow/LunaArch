@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>ASP.NET Core multi-tenancy add-on for LunaArch providing tenant resolution and isolation strategies</Description>
+    <PackageTags>ddd;multi-tenancy;tenant;saas;aspnetcore</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LunaArch.AspNetCore\LunaArch.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>

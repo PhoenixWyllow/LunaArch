@@ -1,4 +1,4 @@
-namespace LunaArch.Infrastructure.MultiTenancy.Abstractions;
+namespace LunaArch.AspNetCore.MultiTenancy.Abstractions;
 
 /// <summary>
 /// Interface for entities that belong to a specific tenant.

@@ -1,4 +1,4 @@
-namespace LunaArch.Infrastructure.MultiTenancy.Abstractions;
+namespace LunaArch.AspNetCore.MultiTenancy.Abstractions;
 
 /// <summary>
 /// Represents a tenant in a multi-tenant application.

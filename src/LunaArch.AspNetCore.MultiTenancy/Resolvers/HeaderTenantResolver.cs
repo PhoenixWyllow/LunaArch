@@ -1,7 +1,7 @@
-using LunaArch.Infrastructure.MultiTenancy.Abstractions;
+using LunaArch.AspNetCore.MultiTenancy.Abstractions;
 using Microsoft.AspNetCore.Http;
 
-namespace LunaArch.Infrastructure.MultiTenancy.Resolvers;
+namespace LunaArch.AspNetCore.MultiTenancy.Resolvers;
 
 /// <summary>
 /// Resolves tenant from HTTP header.

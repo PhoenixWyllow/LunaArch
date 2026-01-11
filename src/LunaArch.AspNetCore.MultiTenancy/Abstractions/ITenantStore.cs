@@ -1,4 +1,4 @@
-namespace LunaArch.Infrastructure.MultiTenancy.Abstractions;
+namespace LunaArch.AspNetCore.MultiTenancy.Abstractions;
 
 /// <summary>
 /// Store for retrieving tenant information.

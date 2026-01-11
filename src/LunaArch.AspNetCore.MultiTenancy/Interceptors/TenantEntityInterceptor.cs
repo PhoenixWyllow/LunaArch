@@ -1,8 +1,8 @@
-using LunaArch.Infrastructure.MultiTenancy.Abstractions;
+using LunaArch.AspNetCore.MultiTenancy.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace LunaArch.Infrastructure.MultiTenancy.Interceptors;
+namespace LunaArch.AspNetCore.MultiTenancy.Interceptors;
 
 /// <summary>
 /// Interceptor that automatically sets the tenant ID on new entities.

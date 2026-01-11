@@ -1,4 +1,4 @@
-namespace LunaArch.Infrastructure.MultiTenancy.Abstractions;
+namespace LunaArch.AspNetCore.MultiTenancy.Abstractions;
 
 /// <summary>
 /// Resolves the current tenant from the request context.

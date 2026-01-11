@@ -1,7 +1,7 @@
-using LunaArch.Infrastructure.MultiTenancy.Middleware;
+using LunaArch.AspNetCore.MultiTenancy.Middleware;
 using Microsoft.AspNetCore.Builder;
 
-namespace LunaArch.Infrastructure.MultiTenancy.Extensions;
+namespace LunaArch.AspNetCore.MultiTenancy.Extensions;
 
 public static class MultiTenancyApplicationExtensions
 {

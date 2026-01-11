@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using LunaArch.Infrastructure.MultiTenancy.Abstractions;
+using LunaArch.AspNetCore.MultiTenancy.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace LunaArch.Infrastructure.MultiTenancy.Persistence;
+namespace LunaArch.AspNetCore.MultiTenancy.Persistence;
 
 /// <summary>
 /// Base DbContext that supports multi-tenancy with automatic tenant filtering.

@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using LunaArch.Infrastructure.MultiTenancy.Abstractions;
-using LunaArch.Infrastructure.MultiTenancy.Resolvers;
+using LunaArch.AspNetCore.MultiTenancy.Abstractions;
+using LunaArch.AspNetCore.MultiTenancy.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LunaArch.Infrastructure.MultiTenancy.Extensions;
+namespace LunaArch.AspNetCore.MultiTenancy.Extensions;
 
 /// <summary>
 /// Extension methods for configuring multi-tenancy.

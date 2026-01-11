@@ -1,8 +1,8 @@
-using LunaArch.Infrastructure.MultiTenancy.Abstractions;
+using LunaArch.AspNetCore.MultiTenancy.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LunaArch.Infrastructure.MultiTenancy.Middleware;
+namespace LunaArch.AspNetCore.MultiTenancy.Middleware;
 
 /// <summary>
 /// Middleware that resolves the current tenant for each request.
