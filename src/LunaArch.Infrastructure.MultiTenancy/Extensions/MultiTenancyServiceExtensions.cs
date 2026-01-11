@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using LunaArch.Infrastructure.MultiTenancy.Abstractions;
-using LunaArch.Infrastructure.MultiTenancy.Middleware;
 using LunaArch.Infrastructure.MultiTenancy.Resolvers;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LunaArch.Infrastructure.MultiTenancy.Extensions;
@@ -10,7 +8,7 @@ namespace LunaArch.Infrastructure.MultiTenancy.Extensions;
 /// <summary>
 /// Extension methods for configuring multi-tenancy.
 /// </summary>
-public static class MultiTenancyExtensions
+public static class MultiTenancyServiceExtensions
 {
     extension(IServiceCollection services)
     {
@@ -52,16 +50,5 @@ public static class MultiTenancyExtensions
 
             return services;
         }
-    }
-
-    /// <summary>
-    /// Adds the tenant resolution middleware to the application pipeline.
-    /// </summary>
-    /// <param name="app">The web application.</param>
-    /// <returns>The web application for chaining.</returns>
-    public static WebApplication UseLunaArchMultiTenancy(this WebApplication app)
-    {
-        app.UseMiddleware<TenantResolutionMiddleware>();
-        return app;
     }
 }

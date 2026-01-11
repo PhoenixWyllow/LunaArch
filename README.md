@@ -19,29 +19,29 @@ LunaArch is a set of reusable libraries that implement Domain-Driven Design (DDD
 
 ## Getting Started
 
-See [Getting Started Guide](getting-started.md) for installation and setup instructions.
+See [Getting Started Guide](docs/getting-started.md) for installation and setup instructions.
 
 ## Documentation
 
-- [Architecture Overview](architecture/overview.md)
-- [Layer Responsibilities](architecture/layers.md)
-- [Domain Primitives](architecture/domain-primitives.md)
-- [CQRS and Messaging](architecture/cqrs.md)
-- [Persistence](architecture/persistence.md)
-- [Multi-tenancy](architecture/multi-tenancy.md)
-- [Testing](architecture/testing.md)
+- [Architecture Overview](docs/architecture/overview.md)
+- [Layer Responsibilities](docs/architecture/layers.md)
+- [Domain Primitives](docs/architecture/domain-primitives.md)
+- [CQRS and Messaging](docs/architecture/cqrs.md)
+- [Persistence](docs/architecture/persistence.md)
+- [Multi-tenancy](docs/architecture/multi-tenancy.md)
+- [Testing](docs/architecture/testing.md)
 
 ## Package Structure
 
 | Package | Description |
 |---------|-------------|
-| `LunaArch.Abstractions` | Core interfaces and primitives (zero dependencies) |
-| `LunaArch.Domain` | Domain layer utilities (Specifications, Guards, Business Rules) |
-| `LunaArch.Application` | Application layer (Exceptions, Pipeline Behaviors) |
-| `LunaArch.Infrastructure` | Infrastructure implementations (EF Core, Dispatcher) |
-| `LunaArch.AspNetCore` | ASP.NET Core integration (Middleware, Extensions) |
-| `LunaArch.Infrastructure.MultiTenancy` | Multi-tenancy add-on |
-| `LunaArch.TestKit` | Testing utilities and fake implementations |
+| [`LunaArch.Abstractions`](src/LunaArch.Abstractions/) | Core interfaces and primitives (zero dependencies) |
+| [`LunaArch.Domain`](src/LunaArch.Domain/) | Domain layer utilities (Specifications, Guards, Business Rules) |
+| [`LunaArch.Application`](src/LunaArch.Application/) | Application layer (Exceptions, Pipeline Behaviors) |
+| [`LunaArch.Infrastructure`](src/LunaArch.Infrastructure/) | Infrastructure implementations (EF Core, Dispatcher) |
+| [`LunaArch.AspNetCore`](src/LunaArch.AspNetCore/) | ASP.NET Core integration (Middleware, Extensions) |
+| [`LunaArch.Infrastructure.MultiTenancy`](src/LunaArch.Infrastructure.MultiTenancy/) | Multi-tenancy add-on |
+| [`LunaArch.TestKit`](src/LunaArch.TestKit/) | Testing utilities and fake implementations |
 
 ## Requirements
 
@@ -51,4 +51,4 @@ See [Getting Started Guide](getting-started.md) for installation and setup instr
 
 ## License
 
-MIT License
+Apache License 2.0

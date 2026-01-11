@@ -8,39 +8,42 @@ namespace LunaArch.AspNetCore.Extensions;
 /// </summary>
 public static class WebApplicationExtensions
 {
-    /// <summary>
-    /// Adds LunaArch middleware to the application pipeline.
-    /// This includes exception handling and correlation ID middleware.
-    /// </summary>
-    /// <param name="app">The web application.</param>
-    /// <returns>The web application for chaining.</returns>
-    public static WebApplication UseLunaArch(this WebApplication app)
+    extension(WebApplication app)
     {
-        app.UseMiddleware<CorrelationIdMiddleware>();
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        /// <summary>
+        /// Adds LunaArch middleware to the application pipeline.
+        /// This includes exception handling and correlation ID middleware.
+        /// </summary>
+        /// <param name="app">The web application.</param>
+        /// <returns>The web application for chaining.</returns>
+        public WebApplication UseLunaArch()
+        {
+            app.UseLunaArchCorrelationId();
+            app.UseLunaArchExceptionHandling();
 
-        return app;
-    }
+            return app;
+        }
 
-    /// <summary>
-    /// Adds only the exception handling middleware.
-    /// </summary>
-    /// <param name="app">The web application.</param>
-    /// <returns>The web application for chaining.</returns>
-    public static WebApplication UseLunaArchExceptionHandling(this WebApplication app)
-    {
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
-        return app;
-    }
+        /// <summary>
+        /// Adds only the exception handling middleware.
+        /// </summary>
+        /// <param name="app">The web application.</param>
+        /// <returns>The web application for chaining.</returns>
+        public WebApplication UseLunaArchExceptionHandling()
+        {
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            return app;
+        }
 
-    /// <summary>
-    /// Adds only the correlation ID middleware.
-    /// </summary>
-    /// <param name="app">The web application.</param>
-    /// <returns>The web application for chaining.</returns>
-    public static WebApplication UseLunaArchCorrelationId(this WebApplication app)
-    {
-        app.UseMiddleware<CorrelationIdMiddleware>();
-        return app;
+        /// <summary>
+        /// Adds only the correlation ID middleware.
+        /// </summary>
+        /// <param name="app">The web application.</param>
+        /// <returns>The web application for chaining.</returns>
+        public WebApplication UseLunaArchCorrelationId()
+        {
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            return app;
+        }
     }
 }

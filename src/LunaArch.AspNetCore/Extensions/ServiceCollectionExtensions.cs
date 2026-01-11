@@ -9,16 +9,19 @@ namespace LunaArch.AspNetCore.Extensions;
 /// </summary>
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// Adds LunaArch ASP.NET Core services to the service collection.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddLunaArchAspNetCore(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddHttpContextAccessor();
-        services.AddScoped<ICurrentUserService, HttpContextCurrentUserService>();
+        /// <summary>
+        /// Adds LunaArch ASP.NET Core services to the service collection.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The service collection for chaining.</returns>
+        public IServiceCollection AddLunaArchAspNetCore()
+        {
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, HttpContextCurrentUserService>();
 
-        return services;
+            return services;
+        }
     }
 }

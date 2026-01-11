@@ -48,20 +48,32 @@ using LunaArch.AspNetCore.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add LunaArch services with your DbContext
-builder.Services.AddLunaArch<MyAppDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddLunaArch<MyAppDbContext>(
+    dbOptions =>
+    {
+        dbOptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    },
+    archConfig =>
+    {
+        // Register command handlers
+        archConfig.AddCommandHandler<CreateOrderCommand, OrderId, CreateOrderCommandHandler>();
+        
+        // Register query handlers
+        archConfig.AddQueryHandler<GetOrderQuery, OrderDto, GetOrderQueryHandler>();
+        
+        // Register domain events (required for non-generic dispatch)
+        archConfig.AddDomainEvent<OrderCreatedEvent>();
+        archConfig.AddDomainEvent<OrderCompletedEvent>();
+        
+        // Register domain event handlers
+        archConfig.AddDomainEventHandler<OrderCreatedEvent, SendOrderConfirmationHandler>();
+        
+        // Register pipeline behaviors
+        archConfig.AddBehavior<ValidationBehavior>();
+    });
 
 // Add ASP.NET Core integration
 builder.Services.AddLunaArchAspNetCore();
-
-// Register your handlers
-builder.Services.AddDispatcher(dispatcher =>
-{
-    dispatcher.RegisterCommandHandler<CreateOrderCommand, Guid, CreateOrderCommandHandler>();
-    dispatcher.RegisterQueryHandler<GetOrderQuery, OrderDto, GetOrderQueryHandler>();
-});
 
 var app = builder.Build();
 
