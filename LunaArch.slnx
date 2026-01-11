@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/LunaArch.Abstractions/LunaArch.Abstractions.csproj" />
+    <Project Path="src/LunaArch.Application/LunaArch.Application.csproj" />
+    <Project Path="src/LunaArch.AspNetCore.FastEndpoints/LunaArch.AspNetCore.FastEndpoints.csproj" />
+    <Project Path="src/LunaArch.AspNetCore.MinimalApi/LunaArch.AspNetCore.MinimalApi.csproj" />
+    <Project Path="src/LunaArch.AspNetCore.MultiTenancy/LunaArch.AspNetCore.MultiTenancy.csproj" />
+    <Project Path="src/LunaArch.AspNetCore/LunaArch.AspNetCore.csproj" />
+    <Project Path="src/LunaArch.Domain/LunaArch.Domain.csproj" />
+    <Project Path="src/LunaArch.Infrastructure/LunaArch.Infrastructure.csproj" />
+    <Project Path="src/LunaArch.TestKit/LunaArch.TestKit.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LunaArch.Abstractions.Tests/LunaArch.Abstractions.Tests.csproj" />
+    <Project Path="tests/LunaArch.Application.Tests/LunaArch.Application.Tests.csproj" />
+    <Project Path="tests/LunaArch.Domain.Tests/LunaArch.Domain.Tests.csproj" />
+    <Project Path="tests/LunaArch.Infrastructure.Tests/LunaArch.Infrastructure.Tests.csproj" />
+    <Project Path="tests/LunaArch.TestKit.Tests/LunaArch.TestKit.Tests.csproj" />
+  </Folder>
+</Solution>
