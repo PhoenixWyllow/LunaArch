@@ -169,7 +169,7 @@ public sealed class GetOrderByIdQueryHandler(
         CancellationToken cancellationToken)
     {
         var spec = new OrderWithLinesSpecification(query.OrderId);
-        var order = await orderRepository.GetFirstOrDefaultAsync(spec, cancellationToken);
+        var order = await orderRepository.FirstOrDefaultAsync(spec, cancellationToken);
 
         if (order is null)
             return null;
@@ -224,18 +224,20 @@ sequenceDiagram
 
 ```csharp
 // In Program.cs or DI setup
-services.AddDispatcher(builder =>
+services.AddLunaArch(builder =>
 {
     // Explicit handler registration (no reflection)
-    builder.RegisterCommandHandler<CreateOrderCommand, Guid, CreateOrderCommandHandler>();
-    builder.RegisterCommandHandler<CancelOrderCommand, Unit, CancelOrderCommandHandler>();
+    builder.AddCommandHandler<CreateOrderCommand, Guid, CreateOrderCommandHandler>();
+    builder.AddCommandHandler<CancelOrderCommand, Unit, CancelOrderCommandHandler>();
     
-    builder.RegisterQueryHandler<GetOrderByIdQuery, OrderDetailsDto?, GetOrderByIdQueryHandler>();
-    builder.RegisterQueryHandler<GetOrdersQuery, PagedResult<OrderSummaryDto>, GetOrdersQueryHandler>();
+    builder.AddQueryHandler<GetOrderByIdQuery, OrderDetailsDto?, GetOrderByIdQueryHandler>();
+    builder.AddQueryHandler<GetOrdersQuery, PagedResult<OrderSummaryDto>, GetOrdersQueryHandler>();
 
-    // Register pipeline behaviors
-    builder.AddBehavior(typeof(LoggingBehavior<,>));
-    builder.AddBehavior(typeof(UnitOfWorkBehavior<,>));
+    // Register domain events (required for non-generic dispatch)
+    builder.AddDomainEvent<OrderCreatedEvent>();
+    
+    // Register domain event handlers
+    builder.AddDomainEventHandler<OrderCreatedEvent, SendOrderConfirmationHandler>();
 });
 ```
 
@@ -255,7 +257,9 @@ public class OrdersController(IDispatcher dispatcher) : ControllerBase
             request.CustomerId,
             request.Items);
 
-        var orderId = await dispatcher.SendAsync(command, cancellationToken);
+        // Note: AOT-friendly API requires explicit type parameters
+        var orderId = await dispatcher.SendAsync<CreateOrderCommand, Guid>(
+            command, cancellationToken);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -269,7 +273,10 @@ public class OrdersController(IDispatcher dispatcher) : ControllerBase
         CancellationToken cancellationToken)
     {
         var query = new GetOrderByIdQuery(id);
-        var result = await dispatcher.SendAsync(query, cancellationToken);
+        
+        // Note: Queries use QueryAsync with explicit type parameters
+        var result = await dispatcher.QueryAsync<GetOrderByIdQuery, OrderDetailsDto?>(
+            query, cancellationToken);
 
         return result is null
             ? NotFound()
@@ -474,12 +481,9 @@ public sealed record GetOrderQuery(Guid Id) : IQuery<Order?>; // Wrong!
 ### 4. Use Specifications for Complex Queries
 ```csharp
 // ✅ Encapsulated query logic
-var spec = new OrdersByCustomerSpecification(customerId)
-    .WithStatus(OrderStatus.Completed)
-    .OrderByDescending(o => o.CreatedAt)
-    .WithPaging(pageNumber, pageSize);
+var spec = new OrdersByCustomerSpecification(customerId);
 
-var orders = await repository.GetBySpecificationAsync(spec);
+var orders = await repository.FindAsync(spec);
 ```
 
 ## Next Steps

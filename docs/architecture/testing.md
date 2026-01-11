@@ -5,7 +5,7 @@ LunaArch provides a TestKit package with fake implementations to simplify unit t
 ## Testing Dependencies
 
 ```xml
-<PackageReference Include="xunit" />
+<PackageReference Include="xunit.v3" />
 <PackageReference Include="Shouldly" />
 <PackageReference Include="NSubstitute" />
 ```
@@ -23,6 +23,7 @@ classDiagram
     class FakeDispatcher {
         +IReadOnlyList~object~ Dispatched
         +object? NextResult
+        +Func~object,object?~? ResultFactory
         +Clear()
         +GetDispatched~T~()
         +WasDispatched~T~()
@@ -36,9 +37,12 @@ classDiagram
 
     class FakeUnitOfWork {
         +int SaveChangesCount
+        +bool HasActiveTransaction
         +Exception? ExceptionToThrow
+        +int ResultToReturn
         +Reset()
         +WasSaved()
+        +WasSavedTimes(times)
     }
 
     class FakeDomainEventDispatcher {
@@ -49,12 +53,17 @@ classDiagram
     }
 
     class FakeDateTimeProvider {
+        +DateTimeOffset UtcNow
+        +DateTimeOffset Now
         +SetUtcNow(datetime)
         +Advance(duration)
         +Reset()
     }
 
     class FakeCurrentUserService {
+        +string? UserId
+        +string? UserName
+        +bool IsAuthenticated
         +AsUser(userId, userName)
         +AsAnonymous()
         +Reset()

@@ -96,6 +96,7 @@ graph LR
     style APP fill:#ff9800,color:#fff
     style INF fill:#9c27b0,color:#fff
     style ASP fill:#f44336,color:#fff
+    style MT fill:#f44336,color:#fff
 ```
 
 ## Layer Responsibilities

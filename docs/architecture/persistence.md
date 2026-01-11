@@ -47,7 +47,7 @@ classDiagram
 Read-only repository for query operations. Use this for queries to enforce read-only access.
 
 ```csharp
-public interface IReadRepository<TEntity, TId>
+public interface IReadRepository<TEntity, in TId>
     where TEntity : Entity<TId>
     where TId : notnull
 {
@@ -55,20 +55,22 @@ public interface IReadRepository<TEntity, TId>
     
     Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
     
-    Task<IReadOnlyList<TEntity>> GetBySpecificationAsync(
+    Task<IReadOnlyList<TEntity>> FindAsync(
         ISpecification<TEntity> specification,
         CancellationToken cancellationToken = default);
     
-    Task<TEntity?> GetFirstOrDefaultAsync(
+    Task<TEntity?> FirstOrDefaultAsync(
         ISpecification<TEntity> specification,
         CancellationToken cancellationToken = default);
     
     Task<int> CountAsync(
-        ISpecification<TEntity>? specification = null,
+        ISpecification<TEntity> specification,
         CancellationToken cancellationToken = default);
     
-    Task<bool> AnyAsync(
-        ISpecification<TEntity>? specification = null,
+    Task<int> CountAsync(CancellationToken cancellationToken = default);
+    
+    Task<bool> ExistsAsync(
+        ISpecification<TEntity> specification,
         CancellationToken cancellationToken = default);
     
     Task<PagedResult<TEntity>> GetPagedAsync(
@@ -84,7 +86,7 @@ public interface IReadRepository<TEntity, TId>
 Full repository with write operations. Only available for aggregate roots.
 
 ```csharp
-public interface IRepository<TEntity, TId> : IReadRepository<TEntity, TId>
+public interface IRepository<TEntity, in TId> : IReadRepository<TEntity, TId>
     where TEntity : AggregateRoot<TId>
     where TId : notnull
 {
@@ -111,13 +113,15 @@ classDiagram
     class ISpecification~T~ {
         <<interface>>
         +Expression~Func~T,bool~~ Criteria
-        +List~Expression~Func~T,object~~~ Includes
-        +List~string~ IncludeStrings
+        +IReadOnlyList~Expression~Func~T,object~~~ Includes
+        +IReadOnlyList~string~ IncludeStrings
         +Expression~Func~T,object~~? OrderBy
         +Expression~Func~T,object~~? OrderByDescending
         +int? Take
         +int? Skip
-        +bool IsPagingEnabled
+        +bool IsSplitQuery
+        +bool IsNoTracking
+        +bool IgnoreQueryFilters
     }
 
     class Specification~T~ {
@@ -127,6 +131,9 @@ classDiagram
         #ApplyOrderBy(expression)
         #ApplyOrderByDescending(expression)
         #ApplyPaging(skip, take)
+        #ApplySplitQuery()
+        #ApplyTracking()
+        #ApplyIgnoreQueryFilters()
     }
 
     ISpecification <|.. Specification
