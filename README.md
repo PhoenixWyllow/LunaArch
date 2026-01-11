@@ -40,7 +40,9 @@ See [Getting Started Guide](docs/getting-started.md) for installation and setup 
 | [`LunaArch.Application`](src/LunaArch.Application/) | Application layer (Exceptions, Pipeline Behaviors) |
 | [`LunaArch.Infrastructure`](src/LunaArch.Infrastructure/) | Infrastructure implementations (EF Core, Dispatcher) |
 | [`LunaArch.AspNetCore`](src/LunaArch.AspNetCore/) | ASP.NET Core integration (Middleware, Extensions) |
-| [`LunaArch.Infrastructure.MultiTenancy`](src/LunaArch.Infrastructure.MultiTenancy/) | Multi-tenancy add-on |
+| [`LunaArch.AspNetCore.MinimalApi`](src/LunaArch.AspNetCore.MinimalApi/) | Minimal API endpoint support |
+| [`LunaArch.AspNetCore.FastEndpoints`](src/LunaArch.AspNetCore.FastEndpoints/) | FastEndpoints integration |
+| [`LunaArch.AspNetCore.MultiTenancy`](src/LunaArch.AspNetCore.MultiTenancy/) | Multi-tenancy add-on |
 | [`LunaArch.TestKit`](src/LunaArch.TestKit/) | Testing utilities and fake implementations |
 
 ## Requirements

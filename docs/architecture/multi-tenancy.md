@@ -28,7 +28,7 @@ graph TB
 ## Installation
 
 ```bash
-dotnet add package LunaArch.Infrastructure.MultiTenancy
+dotnet add package LunaArch.AspNetCore.MultiTenancy
 ```
 
 ## Core Concepts

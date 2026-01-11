@@ -16,6 +16,8 @@
 
   <ItemGroup Label="AspNetCore">
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <!-- FastEndpoints: https://fast-endpoints.com -->
+    <PackageVersion Include="FastEndpoints" Version="7.1.1" />
   </ItemGroup>
 
   <ItemGroup Label="SourceGenerators">

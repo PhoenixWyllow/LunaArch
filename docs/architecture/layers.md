@@ -8,7 +8,7 @@ Each layer in LunaArch has specific responsibilities and rules about what it can
 graph TB
     subgraph Presentation["🌐 Presentation Layer"]
         direction TB
-        P1[Controllers]
+        P1[Minimal APIs / FastEndpoints]
         P2[Middleware]
         P3[API Models/DTOs]
     end
@@ -236,7 +236,7 @@ public class RepositoryBase<TEntity, TId>(DbContext context)
 **Purpose**: Handle HTTP requests and present data to clients.
 
 **Contains**:
-- API Controllers
+- Minimal API endpoint groups **or** FastEndpoints
 - Middleware
 - Request/Response DTOs
 - API configuration
@@ -250,31 +250,93 @@ public class RepositoryBase<TEntity, TId>(DbContext context)
 - ❌ No direct database access
 - ❌ Never return domain entities
 
+LunaArch provides two API integration packages - choose one based on your preference:
+
+### Option 1: Minimal APIs (Recommended for simplicity)
+
 ```csharp
-// Example: Controller
-[ApiController]
-[Route("api/[controller]")]
-public class OrdersController(IDispatcher dispatcher) : ControllerBase
+// OrderEndpoints.cs
+public class OrderEndpoints : IEndpointGroup
 {
-    [HttpPost]
-    [ProducesResponseType<ApiResponse<Guid>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ApiResponse<Guid>>> Create(
-        CreateOrderRequest request,
-        CancellationToken cancellationToken)
+    public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        // 1. Map request to command
-        var command = new CreateOrderCommand(
-            request.CustomerId,
-            request.Items.Select(i => new OrderItemDto(i.ProductId, i.Quantity)));
+        var group = app.MapGroup("/api/orders").WithTags("Orders");
+        
+        group.MapPost("/", CreateOrder);
+        group.MapGet("/{id:guid}", GetOrder);
+    }
 
-        // 2. Dispatch command
-        var orderId = await dispatcher.SendAsync(command, cancellationToken);
+    private static async Task<IResult> CreateOrder(
+        CreateOrderRequest request,
+        IDispatcher dispatcher,
+        CancellationToken ct)
+    {
+        var command = new CreateOrderCommand(request.CustomerId, request.Items);
+        var result = await dispatcher.SendAsync<CreateOrderCommand, Guid>(command, ct);
+        return result.ToCreatedResponse($"/api/orders/{result.Value}");
+    }
 
-        // 3. Return standardized response
-        return Ok(ApiResponse<Guid>.Success(orderId));
+    private static async Task<IResult> GetOrder(
+        Guid id,
+        IDispatcher dispatcher,
+        CancellationToken ct)
+    {
+        var order = await dispatcher.QueryAsync<GetOrderQuery, OrderDto?>(new(id), ct);
+        return order.ToResponse();
     }
 }
+
+// Program.cs
+builder.Services.AddEndpointGroups<OrderEndpoints>();
+app.MapEndpointGroups();
+```
+
+### Option 2: FastEndpoints (Recommended for structure)
+
+```csharp
+// CreateOrderEndpoint.cs
+public class CreateOrderEndpoint : CommandEndpoint<CreateOrderRequest, ApiResponse<Guid>>
+{
+    public override void Configure()
+    {
+        Post("/api/orders");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(CreateOrderRequest req, CancellationToken ct)
+    {
+        var command = new CreateOrderCommand(req.CustomerId, req.Items);
+        var orderId = await SendCommandAsync<CreateOrderCommand, Guid>(command, ct);
+        await SendCreatedAtAsync<GetOrderEndpoint>(new { id = orderId }, ApiResponse<Guid>.Ok(orderId), cancellation: ct);
+    }
+}
+
+// GetOrderEndpoint.cs
+public class GetOrderEndpoint : QueryEndpoint<GetOrderRequest, ApiResponse<OrderDto>>
+{
+    public override void Configure()
+    {
+        Get("/api/orders/{id}");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(GetOrderRequest req, CancellationToken ct)
+    {
+        var order = await SendQueryAsync<GetOrderQuery, OrderDto?>(new(req.Id), ct);
+        
+        if (order is null)
+        {
+            await SendNotFoundAsync(ct);
+            return;
+        }
+        
+        await SendOkAsync(ApiResponse<OrderDto>.Ok(order), ct);
+    }
+}
+
+// Program.cs
+builder.Services.AddLunaArchFastEndpoints();
+app.UseFastEndpoints();
 ```
 
 ## Data Flow Diagram

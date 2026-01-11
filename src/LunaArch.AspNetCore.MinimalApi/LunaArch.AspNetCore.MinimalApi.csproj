@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Minimal API integration for LunaArch providing endpoint abstractions and result mapping</Description>
+    <PackageTags>ddd;minimal-api;endpoints;aspnetcore</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LunaArch.AspNetCore\LunaArch.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>

@@ -14,8 +14,12 @@ dotnet add package LunaArch.Application
 dotnet add package LunaArch.Infrastructure
 dotnet add package LunaArch.AspNetCore
 
+# API integration (choose one)
+dotnet add package LunaArch.AspNetCore.MinimalApi   # For Minimal APIs
+dotnet add package LunaArch.AspNetCore.FastEndpoints # For FastEndpoints
+
 # Optional add-ons
-dotnet add package LunaArch.Infrastructure.MultiTenancy
+dotnet add package LunaArch.AspNetCore.MultiTenancy
 dotnet add package LunaArch.TestKit
 ```
 
@@ -187,38 +191,85 @@ public sealed class GetOrderQueryHandler(
 }
 ```
 
-### 5. Use in Controller
+### 5. Expose via API
+
+LunaArch provides two API integration options. Choose one:
+
+#### Option A: Minimal APIs
 
 ```csharp
-using LunaArch.Abstractions.Messaging;
-using LunaArch.AspNetCore.Results;
-using Microsoft.AspNetCore.Mvc;
+using LunaArch.AspNetCore.MinimalApi;
 
-[ApiController]
-[Route("api/[controller]")]
-public class OrdersController(IDispatcher dispatcher) : ControllerBase
+// OrderEndpoints.cs
+public class OrderEndpoints : IEndpointGroup
 {
-    [HttpPost]
-    public async Task<ActionResult<ApiResponse<Guid>>> Create(
-        CreateOrderCommand command,
-        CancellationToken cancellationToken)
+    public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        var orderId = await dispatcher.SendAsync(command, cancellationToken);
-        return ApiResponse<Guid>.Success(orderId);
-    }
+        var group = app.MapGroup("/api/orders").WithTags("Orders");
+        
+        group.MapPost("/", async (CreateOrderCommand command, IDispatcher dispatcher, CancellationToken ct) =>
+        {
+            var result = await dispatcher.SendAsync<CreateOrderCommand, Guid>(command, ct);
+            return result.ToCreatedResponse($"/api/orders/{result.Value}");
+        });
 
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ApiResponse<OrderDto>>> Get(
-        Guid id,
-        CancellationToken cancellationToken)
-    {
-        var order = await dispatcher.SendAsync(new GetOrderQuery(id), cancellationToken);
-
-        return order is null
-            ? NotFound()
-            : ApiResponse<OrderDto>.Success(order);
+        group.MapGet("/{id:guid}", async (Guid id, IDispatcher dispatcher, CancellationToken ct) =>
+        {
+            var order = await dispatcher.QueryAsync<GetOrderQuery, OrderDto?>(new(id), ct);
+            return order.ToResponse();
+        });
     }
 }
+
+// Program.cs - add to service configuration
+builder.Services.AddEndpointGroups<OrderEndpoints>();
+
+// Program.cs - add after app.UseLunaArch()
+app.MapEndpointGroups();
+```
+
+#### Option B: FastEndpoints
+
+```csharp
+using LunaArch.AspNetCore.FastEndpoints;
+
+// CreateOrderEndpoint.cs
+public class CreateOrderEndpoint : CommandEndpoint<CreateOrderCommand, ApiResponse<Guid>>
+{
+    public override void Configure()
+    {
+        Post("/api/orders");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(CreateOrderCommand req, CancellationToken ct)
+    {
+        var orderId = await SendCommandAsync<CreateOrderCommand, Guid>(req, ct);
+        await SendCreatedAtAsync<GetOrderEndpoint>(new { id = orderId }, ApiResponse<Guid>.Ok(orderId), cancellation: ct);
+    }
+}
+
+// GetOrderEndpoint.cs  
+public class GetOrderEndpoint : QueryEndpoint<GetOrderRequest, ApiResponse<OrderDto>>
+{
+    public override void Configure()
+    {
+        Get("/api/orders/{id}");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(GetOrderRequest req, CancellationToken ct)
+    {
+        var order = await SendQueryAsync<GetOrderQuery, OrderDto?>(new(req.Id), ct);
+        await (order is not null ? SendOkAsync(ApiResponse<OrderDto>.Ok(order), ct) : SendNotFoundAsync(ct));
+    }
+}
+
+// Program.cs - add to service configuration
+builder.Services.AddLunaArchFastEndpoints();
+
+// Program.cs - add after app.UseLunaArch()
+app.UseFastEndpoints();
 ```
 
 ## Next Steps

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>FastEndpoints integration for LunaArch providing CQRS-aligned endpoint patterns</Description>
+    <PackageTags>ddd;fastendpoints;endpoints;aspnetcore;cqrs</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LunaArch.AspNetCore\LunaArch.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FastEndpoints" />
+  </ItemGroup>
+
+</Project>
