@@ -37,6 +37,32 @@ public class BusinessRuleTests
     }
 
     [Fact]
+    public void CheckRuleException_DoesNotChange()
+    {
+        var rule = new AlwaysBrokenRule();
+        var ruleEx = new BusinessRuleValidationException(rule);
+
+        ruleEx.ShouldBeAssignableTo<Exception>();
+        ruleEx.Code.ShouldBe(ruleEx.BrokenRule.Code);
+        ruleEx.BrokenRule.Code.ShouldBe(rule.Code);
+        ruleEx.Details.ShouldBe(rule.Message);
+        ruleEx.Message.ShouldBe(rule.Message);
+    }
+
+    [Fact]
+    public void CheckRuleException_WithMessage_DoesNotChange()
+    {
+        var rule = new AlwaysBrokenRule();
+        var ruleEx = new BusinessRuleValidationException(rule, "Additional details");
+
+        ruleEx.ShouldBeAssignableTo<Exception>();
+        ruleEx.Code.ShouldBe(ruleEx.BrokenRule.Code);
+        ruleEx.BrokenRule.Code.ShouldBe(rule.Code);
+        ruleEx.Details.ShouldBe("Additional details");
+        ruleEx.Message.ShouldBe(rule.Message);
+    }
+
+    [Fact]
     public void CheckRule_WhenRuleIsValid_DoesNotThrow()
     {
         var rule = new AlwaysValidRule();

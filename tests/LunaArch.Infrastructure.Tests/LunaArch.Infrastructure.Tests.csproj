@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LunaArch.Infrastructure\LunaArch.Infrastructure.csproj" />
-    <ProjectReference Include="..\LunaArch.TestKit\LunaArch.TestKit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

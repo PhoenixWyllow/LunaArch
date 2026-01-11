@@ -8,39 +8,45 @@ namespace LunaArch.Domain.Specifications;
 /// </summary>
 public static class SpecificationExtensions
 {
-    /// <summary>
-    /// Combines two specifications with a logical AND.
-    /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
-    /// <param name="left">The left specification.</param>
-    /// <param name="right">The right specification.</param>
-    /// <returns>A new specification representing the AND combination.</returns>
-    public static ISpecification<T> And<T>(this ISpecification<T> left, ISpecification<T> right)
+    extension<T>(ISpecification<T> left)
     {
-        return new AndSpecification<T>(left, right);
+        /// <summary>
+        /// Combines two specifications with a logical AND.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="left">The left specification.</param>
+        /// <param name="right">The right specification.</param>
+        /// <returns>A new specification representing the AND combination.</returns>
+        public ISpecification<T> And(ISpecification<T> right)
+        {
+            return new AndSpecification<T>(left, right);
+        }
+
+        /// <summary>
+        /// Combines two specifications with a logical OR.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="left">The left specification.</param>
+        /// <param name="right">The right specification.</param>
+        /// <returns>A new specification representing the OR combination.</returns>
+        public ISpecification<T> Or(ISpecification<T> right)
+        {
+            return new OrSpecification<T>(left, right);
+        }
     }
 
-    /// <summary>
-    /// Combines two specifications with a logical OR.
-    /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
-    /// <param name="left">The left specification.</param>
-    /// <param name="right">The right specification.</param>
-    /// <returns>A new specification representing the OR combination.</returns>
-    public static ISpecification<T> Or<T>(this ISpecification<T> left, ISpecification<T> right)
+    extension<T>(ISpecification<T> specification)
     {
-        return new OrSpecification<T>(left, right);
-    }
-
-    /// <summary>
-    /// Negates a specification.
-    /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
-    /// <param name="specification">The specification to negate.</param>
-    /// <returns>A new specification representing the negation.</returns>
-    public static ISpecification<T> Not<T>(this ISpecification<T> specification)
-    {
-        return new NotSpecification<T>(specification);
+        /// <summary>
+        /// Negates a specification.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="specification">The specification to negate.</param>
+        /// <returns>A new specification representing the negation.</returns>
+        public ISpecification<T> Not()
+        {
+            return new NotSpecification<T>(specification);
+        }
     }
 }
 

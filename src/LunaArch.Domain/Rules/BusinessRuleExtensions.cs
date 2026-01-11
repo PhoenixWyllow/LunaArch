@@ -5,16 +5,19 @@ namespace LunaArch.Domain.Rules;
 /// </summary>
 public static class BusinessRuleExtensions
 {
-    /// <summary>
-    /// Checks a business rule and throws if it is broken.
-    /// </summary>
-    /// <param name="rule">The rule to check.</param>
-    /// <exception cref="BusinessRuleValidationException">Thrown when the rule is broken.</exception>
-    public static void CheckRule(this IBusinessRule rule)
+    extension(IBusinessRule rule)
     {
-        if (rule.IsBroken())
+        /// <summary>
+        /// Checks a business rule and throws if it is broken.
+        /// </summary>
+        /// <param name="rule">The rule to check.</param>
+        /// <exception cref="BusinessRuleValidationException">Thrown when the rule is broken.</exception>
+        public void CheckRule()
         {
-            throw new BusinessRuleValidationException(rule);
+            if (rule.IsBroken())
+            {
+                throw new BusinessRuleValidationException(rule);
+            }
         }
     }
 

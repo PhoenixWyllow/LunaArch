@@ -12,43 +12,46 @@ namespace LunaArch.Infrastructure.MultiTenancy.Extensions;
 /// </summary>
 public static class MultiTenancyExtensions
 {
-    /// <summary>
-    /// Adds multi-tenancy services to the service collection.
-    /// </summary>
-    /// <typeparam name="TTenantStore">The tenant store implementation type.</typeparam>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddLunaArchMultiTenancy<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTenantStore>(this IServiceCollection services)
-        where TTenantStore : class, ITenantStore
+    extension(IServiceCollection services)
     {
-        services.AddHttpContextAccessor();
-        services.AddScoped<ITenantContext, TenantContext>();
-        services.AddScoped<ITenantResolver, HeaderTenantResolver>();
-        services.AddScoped<ITenantStore, TTenantStore>();
+        /// <summary>
+        /// Adds multi-tenancy services to the service collection.
+        /// </summary>
+        /// <typeparam name="TTenantStore">The tenant store implementation type.</typeparam>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The service collection for chaining.</returns>
+        public IServiceCollection AddLunaArchMultiTenancy<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTenantStore>()
+            where TTenantStore : class, ITenantStore
+        {
+            services.AddHttpContextAccessor();
+            services.AddScoped<ITenantContext, TenantContext>();
+            services.AddScoped<ITenantResolver, HeaderTenantResolver>();
+            services.AddScoped<ITenantStore, TTenantStore>();
 
-        return services;
-    }
+            return services;
+        }
 
-    /// <summary>
-    /// Adds multi-tenancy services with a custom tenant resolver.
-    /// </summary>
-    /// <typeparam name="TTenantStore">The tenant store implementation type.</typeparam>
-    /// <typeparam name="TTenantResolver">The tenant resolver implementation type.</typeparam>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddLunaArchMultiTenancy<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTenantStore, 
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTenantResolver>(
-        this IServiceCollection services)
-        where TTenantStore : class, ITenantStore
-        where TTenantResolver : class, ITenantResolver
-    {
-        services.AddHttpContextAccessor();
-        services.AddScoped<ITenantContext, TenantContext>();
-        services.AddScoped<ITenantResolver, TTenantResolver>();
-        services.AddScoped<ITenantStore, TTenantStore>();
+        /// <summary>
+        /// Adds multi-tenancy services with a custom tenant resolver.
+        /// </summary>
+        /// <typeparam name="TTenantStore">The tenant store implementation type.</typeparam>
+        /// <typeparam name="TTenantResolver">The tenant resolver implementation type.</typeparam>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The service collection for chaining.</returns>
+        public IServiceCollection AddLunaArchMultiTenancy<
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTenantStore,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTenantResolver>(
+            )
+            where TTenantStore : class, ITenantStore
+            where TTenantResolver : class, ITenantResolver
+        {
+            services.AddHttpContextAccessor();
+            services.AddScoped<ITenantContext, TenantContext>();
+            services.AddScoped<ITenantResolver, TTenantResolver>();
+            services.AddScoped<ITenantStore, TTenantStore>();
 
-        return services;
+            return services;
+        }
     }
 
     /// <summary>
