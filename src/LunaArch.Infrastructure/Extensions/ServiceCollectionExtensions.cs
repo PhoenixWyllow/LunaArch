@@ -83,6 +83,9 @@ public static class ServiceCollectionExtensions
                     sp.GetRequiredService<SoftDeleteInterceptor>());
             });
 
+            // Register DbContext base type for repository resolution
+            services.AddScoped<DbContext>(sp => sp.GetRequiredService<TContext>());
+
             // Register Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
 
