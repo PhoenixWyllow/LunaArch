@@ -95,27 +95,27 @@ jobs:
             ./nupkgs/*.nupkg
             ./nupkgs/*.snupkg
 
-#   publish:
-#     needs: build-and-test
-#     runs-on: ubuntu-latest
-#     permissions:
-#       id-token: write  # Required for OIDC trusted publishing
-#     environment: nuget
-#     steps:
-#       - name: Download artifacts
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: nuget-packages
-#           path: ./nupkgs
+  publish:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for OIDC trusted publishing
+    environment: nuget
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nupkgs
 
-#       - name: Setup .NET
-#         uses: actions/setup-dotnet@v4
-#         with:
-#           dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-#       - name: Push to NuGet (Trusted Publishing)
-#         run: |
-#           dotnet nuget push ./nupkgs/*.nupkg \
-#             --source ${{ env.NUGET_SOURCE }} \
-#             --api-key az \
-#             --skip-duplicate
+      - name: Push to NuGet (Trusted Publishing)
+        run: |
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --source ${{ env.NUGET_SOURCE }} \
+            --api-key az \
+            --skip-duplicate
