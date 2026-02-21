@@ -10,6 +10,10 @@ on:
         required: false
         default: 'beta1'
 
+# Minimal default permissions for all jobs
+permissions:
+  contents: read
+
 env:
   DOTNET_VERSION: '10.0.x'
   NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
@@ -17,6 +21,9 @@ env:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write  # Required for dorny/test-reporter
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,12 +50,21 @@ jobs:
             --collect:"XPlat Code Coverage" \
             --results-directory ./test-results
 
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        if: always()
+        with:
+          name: Test Results
+          path: './test-results/**/*.trx'
+          reporter: dotnet-trx
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
-        if: always()  # Upload even if tests fail
+        if: always()
         with:
           name: test-results
           path: ./test-results/**
+          retention-days: 30
 
       - name: Determine version suffix
         id: version
@@ -76,7 +92,7 @@ jobs:
               --output ./nupkgs
           fi
 
-      - name: Upload artifacts
+      - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
@@ -87,9 +103,9 @@ jobs:
 #   publish:
 #     needs: build-and-test
 #     runs-on: ubuntu-latest
-#     environment: nuget  # Links to the trusted publisher environment
 #     permissions:
 #       id-token: write  # Required for OIDC trusted publishing
+#     environment: nuget
 #     steps:
 #       - name: Download artifacts
 #         uses: actions/download-artifact@v4
