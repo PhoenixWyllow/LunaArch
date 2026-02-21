@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Infrastructure implementations including repositories, dispatcher, and EF Core integration for LunaArch</Description>
     <PackageTags>ddd;infrastructure;repository;entity-framework;dispatcher</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

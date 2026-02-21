@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Application layer support including pipeline behaviors and exceptions for LunaArch</Description>
     <PackageTags>ddd;application;pipeline;behaviors;cqrs</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

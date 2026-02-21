@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Testing utilities and fake implementations for LunaArch framework consumers</Description>
     <PackageTags>ddd;testing;fakes;test-doubles</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

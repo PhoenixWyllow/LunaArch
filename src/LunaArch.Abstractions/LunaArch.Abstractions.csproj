@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Core abstractions, primitives, and contracts for LunaArch - a DDD and Clean Architecture framework for .NET</Description>
     <PackageTags>ddd;clean-architecture;domain-driven-design;cqrs;abstractions</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

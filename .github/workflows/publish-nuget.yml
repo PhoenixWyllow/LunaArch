@@ -1,0 +1,110 @@
+name: Publish to NuGet
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version_suffix:
+        description: 'Version suffix (e.g., beta1, preview.1)'
+        required: false
+        default: 'beta1'
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          dotnet test --configuration Release --no-build \
+            --verbosity normal \
+            --logger "trx;LogFileName=results.trx" \
+            --logger "html;LogFileName=results.html" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./test-results
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()  # Upload even if tests fail
+        with:
+          name: test-results
+          path: ./test-results/**
+
+      - name: Determine version suffix
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+            if [[ "$TAG" == *"-"* ]]; then
+              SUFFIX="${TAG#*-}"
+            else
+              SUFFIX=""
+            fi
+          else
+            SUFFIX="${{ github.event.inputs.version_suffix }}"
+          fi
+          echo "suffix=$SUFFIX" >> $GITHUB_OUTPUT
+
+      - name: Pack
+        run: |
+          if [ -n "${{ steps.version.outputs.suffix }}" ]; then
+            dotnet pack --configuration Release --no-build \
+              -p:VersionSuffix=${{ steps.version.outputs.suffix }} \
+              --output ./nupkgs
+          else
+            dotnet pack --configuration Release --no-build \
+              --output ./nupkgs
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: |
+            ./nupkgs/*.nupkg
+            ./nupkgs/*.snupkg
+
+#   publish:
+#     needs: build-and-test
+#     runs-on: ubuntu-latest
+#     environment: nuget  # Links to the trusted publisher environment
+#     permissions:
+#       id-token: write  # Required for OIDC trusted publishing
+#     steps:
+#       - name: Download artifacts
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: nuget-packages
+#           path: ./nupkgs
+
+#       - name: Setup .NET
+#         uses: actions/setup-dotnet@v4
+#         with:
+#           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+#       - name: Push to NuGet (Trusted Publishing)
+#         run: |
+#           dotnet nuget push ./nupkgs/*.nupkg \
+#             --source ${{ env.NUGET_SOURCE }} \
+#             --api-key az \
+#             --skip-duplicate

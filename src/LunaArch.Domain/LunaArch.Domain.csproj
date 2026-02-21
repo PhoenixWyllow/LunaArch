@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Domain layer helpers including specifications and business rules for LunaArch</Description>
     <PackageTags>ddd;domain;specifications;business-rules</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

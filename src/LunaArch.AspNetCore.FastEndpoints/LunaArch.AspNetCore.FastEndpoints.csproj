@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>FastEndpoints integration for LunaArch providing CQRS-aligned endpoint patterns</Description>
     <PackageTags>ddd;fastendpoints;endpoints;aspnetcore;cqrs</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

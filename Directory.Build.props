@@ -17,8 +17,8 @@
     <Description>A modern, AOT-friendly DDD and Clean Architecture framework for .NET 10</Description>
     <Copyright>Copyright © 2026 LunaArch Contributors</Copyright>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/LunaArch/LunaArch</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/LunaArch/LunaArch</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PhoenixWyllow/LunaArch</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/PhoenixWyllow/LunaArch</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>ddd;clean-architecture;cqrs;aot;dotnet</PackageTags>
@@ -26,12 +26,17 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Default to not packable; override in library projects -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <!-- Base version - update manually for releases -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <!-- CI can override with: -p:VersionSuffix=preview.123 -->
+    <VersionSuffix Condition="'$(VersionSuffix)' == ''"></VersionSuffix>
+    <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix).0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,5 +45,9 @@
     <Using Include="System.Linq" />
     <Using Include="System.Threading" />
     <Using Include="System.Threading.Tasks" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>ASP.NET Core multi-tenancy add-on for LunaArch providing tenant resolution and isolation strategies</Description>
     <PackageTags>ddd;multi-tenancy;tenant;saas;aspnetcore</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

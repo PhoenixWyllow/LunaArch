@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Minimal API integration for LunaArch providing endpoint abstractions and result mapping</Description>
     <PackageTags>ddd;minimal-api;endpoints;aspnetcore</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
