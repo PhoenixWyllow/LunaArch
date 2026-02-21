@@ -45,8 +45,8 @@ jobs:
         run: |
           dotnet test --configuration Release --no-build \
             --verbosity normal \
-            --logger "trx;LogFileName=results.trx" \
-            --logger "html;LogFileName=results.html" \
+            --logger "trx;LogFilePrefix=results" \
+            --logger "html;LogFilePrefix=results" \
             --collect:"XPlat Code Coverage" \
             --results-directory ./test-results
 
