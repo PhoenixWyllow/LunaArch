@@ -43,19 +43,14 @@ jobs:
 
       - name: Test
         run: |
-          dotnet test --configuration Release --no-build \
-            --verbosity normal \
-            --logger "trx;LogFilePrefix=results" \
-            --logger "html;LogFilePrefix=results" \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./test-results
+          dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
 
       - name: Test Report
         uses: dorny/test-reporter@v2
         if: always()
         with:
           name: Test Results
-          path: './test-results/**/*.trx'
+          path: './TestResults/**/*.trx'
           reporter: dotnet-trx
 
       - name: Upload test results
@@ -63,8 +58,8 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: ./test-results/**
-          retention-days: 30
+          path: ./TestResults/**
+          retention-days: 5
 
       - name: Determine version suffix
         id: version
