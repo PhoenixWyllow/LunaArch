@@ -113,9 +113,16 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      # Get a short-lived NuGet API key
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+    
       - name: Push to NuGet (Trusted Publishing)
         run: |
           dotnet nuget push ./nupkgs/*.nupkg \
             --source ${{ env.NUGET_SOURCE }} \
-            --api-key az \
+            --api-key ${{steps.login.outputs.NUGET_API_KEY}} \
             --skip-duplicate

@@ -2,6 +2,9 @@
 
 A modern, AOT-friendly DDD and Clean Architecture framework for .NET 10 and C# 14.
 
+[![Publish to NuGet](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/publish-nuget.yml)
+
+
 ## Overview
 
 LunaArch is a set of reusable libraries that implement Domain-Driven Design (DDD) patterns and Clean Architecture principles. It provides a solid foundation for building enterprise applications with proper separation of concerns, testability, and maintainability.
