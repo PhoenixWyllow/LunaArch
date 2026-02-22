@@ -41,6 +41,9 @@ jobs:
   build-and-test:
     needs: determine-version
     uses: ./.github/workflows/build-and-test.yml
+    permissions:
+      contents: read
+      checks: write
     with:
       pack: true
       version-suffix: ${{ needs.determine-version.outputs.suffix }}
@@ -49,6 +52,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
+      contents: read   # Required for actions/checkout (global.json)
       id-token: write  # Required for OIDC trusted publishing
     environment: nuget
     steps:
