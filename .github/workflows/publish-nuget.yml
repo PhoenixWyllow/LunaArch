@@ -15,52 +15,14 @@ permissions:
   contents: read
 
 env:
-  DOTNET_VERSION: '10.0.x'
   NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
 
 jobs:
-  build-and-test:
+  determine-version:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      checks: write  # Required for dorny/test-reporter
+    outputs:
+      suffix: ${{ steps.version.outputs.suffix }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Restore
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Test
-        run: |
-          dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
-
-      - name: Test Report
-        uses: dorny/test-reporter@v2
-        if: always()
-        with:
-          name: Test Results
-          path: './TestResults/**/*.trx'
-          reporter: dotnet-trx
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: ./TestResults/**
-          retention-days: 5
-
       - name: Determine version suffix
         id: version
         run: |
@@ -76,24 +38,12 @@ jobs:
           fi
           echo "suffix=$SUFFIX" >> $GITHUB_OUTPUT
 
-      - name: Pack
-        run: |
-          if [ -n "${{ steps.version.outputs.suffix }}" ]; then
-            dotnet pack --configuration Release --no-build \
-              -p:VersionSuffix=${{ steps.version.outputs.suffix }} \
-              --output ./nupkgs
-          else
-            dotnet pack --configuration Release --no-build \
-              --output ./nupkgs
-          fi
-
-      - name: Upload packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: nuget-packages
-          path: |
-            ./nupkgs/*.nupkg
-            ./nupkgs/*.snupkg
+  build-and-test:
+    needs: determine-version
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      pack: true
+      version-suffix: ${{ needs.determine-version.outputs.suffix }}
 
   publish:
     needs: build-and-test
@@ -102,16 +52,22 @@ jobs:
       id-token: write  # Required for OIDC trusted publishing
     environment: nuget
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: global.json
+          sparse-checkout-cone-mode: false
+
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: nuget-packages
           path: ./nupkgs
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          global-json-file: global.json
 
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)

@@ -1,0 +1,83 @@
+name: Build and Test
+
+on:
+  workflow_call:
+    inputs:
+      pack:
+        description: 'Whether to pack NuGet packages after building'
+        type: boolean
+        required: false
+        default: false
+      version-suffix:
+        description: 'Version suffix for NuGet packages (e.g., beta1, preview.1)'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write  # Required for dorny/test-reporter
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        if: '!cancelled()'
+        with:
+          name: Test Results
+          path: './TestResults/**/*.trx'
+          reporter: dotnet-trx
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v6
+        if: '!cancelled()'
+        with:
+          name: test-results
+          path: ./TestResults/**
+          retention-days: 5
+
+      - name: Pack
+        if: inputs.pack
+        run: |
+          if [ -n "${{ inputs.version-suffix }}" ]; then
+            dotnet pack --configuration Release --no-build \
+              -p:VersionSuffix=${{ inputs.version-suffix }} \
+              --output ./nupkgs
+          else
+            dotnet pack --configuration Release --no-build \
+              --output ./nupkgs
+          fi
+
+      - name: Upload packages
+        if: inputs.pack
+        uses: actions/upload-artifact@v6
+        with:
+          name: nuget-packages
+          path: |
+            ./nupkgs/*.nupkg
+            ./nupkgs/*.snupkg
+          retention-days: 5
