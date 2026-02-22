@@ -3,8 +3,22 @@ name: CI
 on:
   push:
     branches: [main, develop]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '*.props'
+      - '*.slnx'
+      - 'global.json'
+      - '.github/workflows/**'
   pull_request:
     branches: [main, develop]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '*.props'
+      - '*.slnx'
+      - 'global.json'
+      - '.github/workflows/**'
 
 jobs:
   build-and-test:
