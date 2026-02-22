@@ -2,9 +2,10 @@
 
 A modern, AOT-friendly DDD and Clean Architecture framework for .NET 10 and C# 14.
 
-[![CI](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/ci.yml/badge.svg)](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/ci.yml)
-[![Publish to NuGet](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/publish-nuget.yml)
+[![main](https://img.shields.io/github/actions/workflow/status/PhoenixWyllow/LunaArch/ci.yml?branch=main&label=main&icon=githubactions)](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/ci.yml)
+[![develop](https://img.shields.io/github/actions/workflow/status/PhoenixWyllow/LunaArch/ci.yml?branch=develop&label=develop&icon=githubactions)](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/PhoenixWyllow/LunaArch.svg)](https://github.com/PhoenixWyllow/LunaArch/blob/main/LICENSE)
+[![Publish to NuGet](https://img.shields.io/github/actions/workflow/status/PhoenixWyllow/LunaArch/publish-nuget.yml?branch=main&label=Deployment&icon=github)](https://github.com/PhoenixWyllow/LunaArch/actions/workflows/publish-nuget.yml)
 [![NuGet](https://img.shields.io/nuget/v/LunaArch.Abstractions.svg?label=NuGet&logo=nuget)](https://www.nuget.org/packages?q=LunaArch)
 
 [Abstractions](https://www.nuget.org/packages/LunaArch.Abstractions/) · [Domain](https://www.nuget.org/packages/LunaArch.Domain/) · [Application](https://www.nuget.org/packages/LunaArch.Application/) · [Infrastructure](https://www.nuget.org/packages/LunaArch.Infrastructure/) · [AspNetCore](https://www.nuget.org/packages/LunaArch.AspNetCore/) · [MinimalApi](https://www.nuget.org/packages/LunaArch.AspNetCore.MinimalApi/) · [FastEndpoints](https://www.nuget.org/packages/LunaArch.AspNetCore.FastEndpoints/) · [MultiTenancy](https://www.nuget.org/packages/LunaArch.AspNetCore.MultiTenancy/) · [TestKit](https://www.nuget.org/packages/LunaArch.TestKit/)
