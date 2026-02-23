@@ -241,6 +241,34 @@ services.AddLunaArch(builder =>
 });
 ```
 
+### Application-Layer Self-Registration
+
+The `ILunaArchBuilder` interface lives in `LunaArch.Abstractions`, so your Application
+project can expose its own registration method without referencing `LunaArch.Infrastructure`:
+
+```csharp
+// MyApp.Application/DependencyInjection.cs — references LunaArch.Abstractions only
+using LunaArch.Abstractions.Messaging;
+
+public static class DependencyInjection
+{
+    public static ILunaArchBuilder AddApplicationHandlers(this ILunaArchBuilder builder)
+    {
+        builder.AddCommandHandler<CreateOrderCommand, Guid, CreateOrderCommandHandler>();
+        builder.AddQueryHandler<GetOrderByIdQuery, OrderDetailsDto?, GetOrderByIdQueryHandler>();
+        builder.AddDomainEventHandler<OrderCreatedEvent, SendOrderConfirmationHandler>();
+
+        return builder;
+    }
+}
+
+// Program.cs — the only place that references LunaArch.Infrastructure
+services.AddLunaArch(builder =>
+{
+    builder.AddApplicationHandlers();
+});
+```
+
 ### Using the Dispatcher
 
 ```csharp

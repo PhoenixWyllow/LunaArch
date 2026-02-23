@@ -31,7 +31,7 @@ namespace LunaArch.Infrastructure.Messaging;
 /// });
 /// </code>
 /// </example>
-public sealed class LunaArchBuilder
+public sealed class LunaArchBuilder : ILunaArchBuilder
 {
     private readonly IServiceCollection _services;
     private readonly DomainEventRegistry _eventRegistry;
@@ -47,14 +47,8 @@ public sealed class LunaArchBuilder
         _eventRegistry = eventRegistry;
     }
 
-    /// <summary>
-    /// Registers a command handler.
-    /// </summary>
-    /// <typeparam name="TCommand">The command type.</typeparam>
-    /// <typeparam name="TResult">The result type.</typeparam>
-    /// <typeparam name="THandler">The handler type.</typeparam>
-    /// <returns>The builder for chaining.</returns>
-    public LunaArchBuilder AddCommandHandler<TCommand, TResult, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>()
+    /// <inheritdoc />
+    public ILunaArchBuilder AddCommandHandler<TCommand, TResult, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>()
         where TCommand : ICommand<TResult>
         where THandler : class, ICommandHandler<TCommand, TResult>
     {
@@ -62,14 +56,8 @@ public sealed class LunaArchBuilder
         return this;
     }
 
-    /// <summary>
-    /// Registers a query handler.
-    /// </summary>
-    /// <typeparam name="TQuery">The query type.</typeparam>
-    /// <typeparam name="TResult">The result type.</typeparam>
-    /// <typeparam name="THandler">The handler type.</typeparam>
-    /// <returns>The builder for chaining.</returns>
-    public LunaArchBuilder AddQueryHandler<TQuery, TResult, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>()
+    /// <inheritdoc />
+    public ILunaArchBuilder AddQueryHandler<TQuery, TResult, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>()
         where TQuery : IQuery<TResult>
         where THandler : class, IQueryHandler<TQuery, TResult>
     {
@@ -77,26 +65,15 @@ public sealed class LunaArchBuilder
         return this;
     }
 
-    /// <summary>
-    /// Registers a domain event type for AOT-compatible dispatch.
-    /// This is required for dispatching events from entity collections using the non-generic overload.
-    /// </summary>
-    /// <typeparam name="TEvent">The domain event type.</typeparam>
-    /// <returns>The builder for chaining.</returns>
-    public LunaArchBuilder AddDomainEvent<TEvent>() where TEvent : IDomainEvent
+    /// <inheritdoc />
+    public ILunaArchBuilder AddDomainEvent<TEvent>() where TEvent : IDomainEvent
     {
         _eventRegistry.Register<TEvent>();
         return this;
     }
 
-    /// <summary>
-    /// Registers a domain event handler.
-    /// This also automatically registers the event type for AOT-compatible dispatch.
-    /// </summary>
-    /// <typeparam name="TEvent">The domain event type.</typeparam>
-    /// <typeparam name="THandler">The handler type.</typeparam>
-    /// <returns>The builder for chaining.</returns>
-    public LunaArchBuilder AddDomainEventHandler<TEvent, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>()
+    /// <inheritdoc />
+    public ILunaArchBuilder AddDomainEventHandler<TEvent, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>()
         where TEvent : IDomainEvent
         where THandler : class, IDomainEventHandler<TEvent>
     {
@@ -108,14 +85,10 @@ public sealed class LunaArchBuilder
         return this;
     }
 
-    /// <summary>
-    /// Registers a pipeline behavior.
-    /// </summary>
-    /// <typeparam name="TBehavior">The behavior type.</typeparam>
-    /// <returns>The builder for chaining.</returns>
+    /// <inheritdoc />
     [SuppressMessage("Trimming", "IL2090:Target generic argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method", Justification = "Behavior types are explicitly registered by the consumer")]
     [SuppressMessage("Trimming", "IL2087:'implementationType' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method", Justification = "Behavior types are explicitly registered by the consumer")]
-    public LunaArchBuilder AddBehavior<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces | DynamicallyAccessedMemberTypes.PublicConstructors)] TBehavior>()
+    public ILunaArchBuilder AddBehavior<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces | DynamicallyAccessedMemberTypes.PublicConstructors)] TBehavior>()
         where TBehavior : class
     {
         var behaviorType = typeof(TBehavior);
@@ -131,14 +104,8 @@ public sealed class LunaArchBuilder
         return this;
     }
 
-    /// <summary>
-    /// Registers a pipeline behavior for specific request/response types.
-    /// </summary>
-    /// <typeparam name="TRequest">The request type.</typeparam>
-    /// <typeparam name="TResponse">The response type.</typeparam>
-    /// <typeparam name="TBehavior">The behavior implementation type.</typeparam>
-    /// <returns>The builder for chaining.</returns>
-    public LunaArchBuilder AddBehavior<TRequest, TResponse, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBehavior>()
+    /// <inheritdoc />
+    public ILunaArchBuilder AddBehavior<TRequest, TResponse, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBehavior>()
         where TBehavior : class, IPipelineBehavior<TRequest, TResponse>
     {
         _services.AddScoped<IPipelineBehavior<TRequest, TResponse>, TBehavior>();
