@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
         /// <param name="configureLunaArch">Optional action to configure LunaArch services.</param>
         /// <returns>The service collection for chaining.</returns>
         public IServiceCollection AddLunaArch(
-            Action<LunaArchBuilder>? configureLunaArch = null)
+            Action<ILunaArchBuilder>? configureLunaArch = null)
         {
             // Create and register the domain event registry
             var eventRegistry = new DomainEventRegistry();
@@ -68,7 +68,7 @@ public static class ServiceCollectionExtensions
         [SuppressMessage("Trimming", "IL2091:Target generic argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method", Justification = "EF Core is not fully AOT compatible")]
         public IServiceCollection AddLunaArch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TContext>(
             Action<DbContextOptionsBuilder> configureDbContext,
-            Action<LunaArchBuilder>? configureLunaArch = null)
+            Action<ILunaArchBuilder>? configureLunaArch = null)
             where TContext : DbContextBase
         {
             services.AddLunaArch(configureLunaArch);

@@ -59,6 +59,7 @@ graph TB
 - `ValueObject` - Base class for value objects
 - `IDomainEvent` - Interface for domain events
 - `ICommand<T>`, `IQuery<T>` - CQRS interfaces
+- `ILunaArchBuilder` - Builder contract for handler registration
 - `IRepository<T, TId>` - Repository contract
 - `IUnitOfWork` - Unit of work contract
 
