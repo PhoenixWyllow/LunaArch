@@ -25,7 +25,7 @@
     <!-- Value Objects and Strongly Typed IDs: https://github.com/SteveDunn/Vogen -->
     <PackageVersion Include="Vogen" Version="8.0.4" />
     <!-- Smart Enums: https://github.com/andrewlock/NetEscapades.EnumGenerators -->
-    <PackageVersion Include="NetEscapades.EnumGenerators" Version="1.0.0-beta20" />
+    <PackageVersion Include="NetEscapades.EnumGenerators" Version="1.0.0-beta21" />
     <!-- Guard Clauses: https://github.com/ardalis/GuardClauses -->
     <PackageVersion Include="Ardalis.GuardClauses" Version="5.0.0" />
   </ItemGroup>
