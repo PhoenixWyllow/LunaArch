@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Shouldly;
-using Vogen;
 using Xunit;
 
 namespace LunaArch.Infrastructure.Tests.Extensions;
 
-[ValueObject<Guid>]
-public readonly partial struct TestEntityId;
+public readonly record struct TestEntityId(Guid Value)
+{
+    public static TestEntityId From(Guid value) => new(value);
+}
 
 public sealed class TestEntity : AggregateRoot<TestEntityId>
 {

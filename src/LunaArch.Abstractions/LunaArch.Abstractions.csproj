@@ -6,11 +6,4 @@
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Vogen for Value Objects and Strongly Typed IDs: https://github.com/SteveDunn/Vogen -->
-    <PackageReference Include="Vogen" PrivateAssets="all" />
-    <!-- NetEscapades.EnumGenerators for Smart Enums: https://github.com/andrewlock/NetEscapades.EnumGenerators -->
-    <PackageReference Include="NetEscapades.EnumGenerators" PrivateAssets="all" />
-  </ItemGroup>
-
 </Project>

@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Vogen" PrivateAssets="all" />
-  </ItemGroup>
-
 </Project>

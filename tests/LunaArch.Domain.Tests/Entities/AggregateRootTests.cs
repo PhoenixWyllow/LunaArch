@@ -2,44 +2,40 @@ using Ardalis.GuardClauses;
 using LunaArch.Abstractions.Events;
 using LunaArch.Abstractions.Primitives;
 using Shouldly;
-using Vogen;
 using Xunit;
 
 namespace LunaArch.Domain.Tests.Entities;
 
-[ValueObject<Guid>]
-public readonly partial struct ProductId;
-
-[ValueObject<string>]
-public readonly partial struct ProductName
+public readonly record struct ProductId(Guid Value)
 {
-    private static Validation Validate(string value)
+    public static ProductId From(Guid value) => new(value);
+}
+
+public readonly record struct ProductName(string Value)
+{
+    public static ProductName From(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return Validation.Invalid("Product name cannot be empty");
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
         if (value.Length > 200)
         {
-            return Validation.Invalid("Product name cannot exceed 200 characters");
+            throw new ArgumentException("Product name cannot exceed 200 characters", nameof(value));
         }
 
-        return Validation.Ok;
+        return new(value);
     }
 }
 
-[ValueObject<decimal>]
-public readonly partial struct Price
+public readonly record struct Price(decimal Value)
 {
-    private static Validation Validate(decimal value)
+    public static Price From(decimal value)
     {
         if (value < 0)
         {
-            return Validation.Invalid("Price cannot be negative");
+            throw new ArgumentException("Price cannot be negative", nameof(value));
         }
 
-        return Validation.Ok;
+        return new(value);
     }
 }
 
