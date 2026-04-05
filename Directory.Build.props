@@ -22,6 +22,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>ddd;clean-architecture;cqrs;aot;dotnet</PackageTags>
+    <PackageIcon>lunaarch.icon.png</PackageIcon>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
@@ -54,5 +55,6 @@
   
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" />
+    <None Include="$(MSBuildThisFileDirectory)\images\lunaarch.icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

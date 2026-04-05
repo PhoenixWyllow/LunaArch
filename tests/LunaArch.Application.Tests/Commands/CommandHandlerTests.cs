@@ -4,25 +4,25 @@ using LunaArch.TestKit.Fakes;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
-using Vogen;
 using Xunit;
 
 namespace LunaArch.Application.Tests.Commands;
 
-[ValueObject<Guid>]
-public readonly partial struct OrderId;
-
-[ValueObject<decimal>]
-public readonly partial struct OrderAmount
+public readonly record struct OrderId(Guid Value)
 {
-    private static Validation Validate(decimal value)
+    public static OrderId From(Guid value) => new(value);
+}
+
+public readonly record struct OrderAmount(decimal Value)
+{
+    public static OrderAmount From(decimal value)
     {
         if (value <= 0)
         {
-            return Validation.Invalid("Order amount must be positive");
+            throw new ArgumentException("Order amount must be positive", nameof(value));
         }
 
-        return Validation.Ok;
+        return new(value);
     }
 }
 

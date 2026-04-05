@@ -3,13 +3,14 @@ using LunaArch.TestKit.Fakes;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
-using Vogen;
 using Xunit;
 
 namespace LunaArch.Application.Tests.Events;
 
-[ValueObject<Guid>]
-public readonly partial struct OrderId;
+public readonly record struct OrderId(Guid Value)
+{
+    public static OrderId From(Guid value) => new(value);
+}
 
 public sealed record OrderCompletedEvent(OrderId OrderId, DateTimeOffset CompletedAt) : IDomainEvent
 {

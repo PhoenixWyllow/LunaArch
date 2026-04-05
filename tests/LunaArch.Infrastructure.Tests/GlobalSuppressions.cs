@@ -9,7 +9,3 @@
 
 // Suppress xUnit1051 in tests - TestContext.Current.CancellationToken not critical for these tests
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1051:Ensure TestContext.Current.CancellationToken is used", Justification = "Not critical for these unit tests", Scope = "namespaceanddescendants", Target = "~N:LunaArch.Infrastructure.Tests")]
-
-// Suppress IL2026 and IL3050 from Vogen-generated code in test projects
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2026:Members annotated with RequiresUnreferencedCodeAttribute", Justification = "Vogen-generated code, not relevant for test projects")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("AOT", "IL3050:Members annotated with RequiresDynamicCodeAttribute", Justification = "Vogen-generated code, not relevant for test projects")]
