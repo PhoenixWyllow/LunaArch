@@ -22,7 +22,7 @@
     <PackageVersion Include="Ardalis.GuardClauses" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup Label="Testing">
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <!-- xUnit v3: https://xunit.net/docs/getting-started/v3/getting-started -->
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
