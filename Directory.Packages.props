@@ -15,7 +15,7 @@
   <ItemGroup Label="AspNetCore">
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <!-- FastEndpoints: https://fast-endpoints.com -->
-    <PackageVersion Include="FastEndpoints" Version="8.1.0" />
+    <PackageVersion Include="FastEndpoints" Version="8.2.0" />
   </ItemGroup>
   <ItemGroup Label="Guards">
     <!-- Guard Clauses: https://github.com/ardalis/GuardClauses -->
